@@ -1,11 +1,7 @@
 const router = require('express').Router()
-const { where } = require('../../controllers/connect');
 const knex = require('../../controllers/connect')
-const joi = require('joi')
-const ojlogin = joi.object({
-  tendangnhap: joi.string().required(),
-  matkhau: joi.string().min(3).required(),
-})
+
+
 
 router.post("/dangnhap", (req, res) => {
   console.log('body', req.body);
@@ -30,7 +26,7 @@ router.post("/dangnhap", (req, res) => {
 
 router.post("/dangky", (req, res) => {
   const { tendangnhap, matkhau, hovaten, email, sodienthoai, diachi } = req.body
-  console.log('qqqqqqqqqqqqqq', req.body)
+  // console.log('qqqqqqqqqqqqqq', req.body)
   knex("taiKhoan").select().where({ tendangnhap: tendangnhap }).then((result) => {
     // console.log("tra ve", result[0].tendangnhap)
 

@@ -1,9 +1,14 @@
 const router = require('express').Router()
 const knex = require('../../controllers/connect')
+
+
+
+
+
 router.post("/", (req, res) => {
   console.log(req.body);
   const { id } = req.body
-  knex.from("sanPham").select().innerJoin("tacGia", 'sanPham.idtacgia', 'tacGia.id').then((result) => {
+  knex.from("tacGia").select().innerJoin("sanPham", 'sanPham.idtacgia', 'tacGia.id').then((result) => {
     console.log(result)
     res.json({ success: true, data: result })
   })
