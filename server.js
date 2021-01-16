@@ -11,11 +11,13 @@ const routesTaiKhoan = require('./src/routes/taikhoan')
 const routesSanPham = require('./src/routes/sanpham')
 const routesTheLoai = require('./src/routes/theloai')
 const routesGioHang = require('./src/routes/giohang')
+const routesTopK = require('./src/routes/topk')
 
 app.use("/taikhoan", routesTaiKhoan)
 app.use("/sanpham", routesSanPham)
 app.use("/theloai", routesTheLoai)
 app.use("/giohang", routesGioHang)
+app.use("/topk", routesTopK)
 
 
 
