@@ -6,7 +6,6 @@ const knex = require('../../controllers/connect')
 router.post("/dangnhap", (req, res) => {
   console.log('body', req.body);
   // const { error } = ojlogin.validate(req.body)
-
   // if (error) { return res.json({ message: error.details[0].message }) }
   const { tendangnhap, matkhau } = req.body
 
@@ -59,8 +58,6 @@ router.post('/capnhatthongtin', (req, res) => {
 
       return res.json({ success: false, message: 'Mật khẩu xác nhận không đúng' })
     }
-
-
   })
 
 })
