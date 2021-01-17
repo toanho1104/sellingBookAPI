@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const { when } = require('joi');
 const knex = require('../../controllers/connect')
 
 
@@ -23,11 +24,11 @@ router.post("/them", (req, res) => {
   console.log(req.body);
   const { id, tensanpham, giaban, imageurl, soluong, thanhtien } = req.body
   knex.from("gioHang").select().where({ idsanpham: id }).then((result) => {
-    const b = 1
-    const c = 1
+    console.log('aaaaaaaaaaaaaaaaaaaaa', result.length)
     const a = result
     if (a.length === 0) {
-      knex("chiTietHoaDon").insert({ idsanpham: id, soluong: 1, idhoadon: 1, thanhtien: giaban }).then((result) => { console.log('aaaaaaa') })
+      knex("hoaDon").insert({ id: 1, diachi: '203/18/23 Truong Chinh', idtaikhoan: '1', tongtien: '250000' }).then((result) => { })
+      knex("chiTietHoaDon").insert({ idsanpham: id, soluong: '1', idhoadon: '1', thanhtien: giaban }).then((result) => { })
       knex("gioHang").insert({ idsanpham: id, tensanpham: tensanpham, giaban: giaban, imageurl: imageurl, soluong: soluong, }).then((result) => {
         res.json({ id: result[0], success: true, message: 'thêm thành công' })
 
@@ -120,6 +121,7 @@ router.post("/thanhtoan", (req, res) => {
   knex.from("gioHang").del().then((result) => {
     console.log(result)
     res.json({ success: true, message: 'thanh toan thanh cong' })
+    knex.from("hoaDon").del().where({ id: 1 }).then((result) => { })
   })
 })
 
