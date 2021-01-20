@@ -24,28 +24,31 @@ router.post("/them", (req, res) => {
   console.log(req.body);
   const { id, tensanpham, giaban, imageurl, soluong, thanhtien } = req.body
   knex.from("gioHang").select().where({ idsanpham: id }).then((result) => {
-    console.log('aaaaaaaaaaaaaaaaaaaaa', result.length)
     const a = result
     if (a.length === 0) {
       knex("hoaDon").insert({ id: 1, diachi: '203/18/23 Truong Chinh', idtaikhoan: '1', tongtien: '250000' }).then((result) => { })
       knex("chiTietHoaDon").insert({ idsanpham: id, soluong: '1', idhoadon: '1', dongia: giaban, thanhtien: giaban }).then((result) => { })
-      knex("gioHang").insert({ idsanpham: id, tensanpham: tensanpham, giaban: giaban, imageurl: imageurl, soluong: soluong, }).then((result) => {
+      knex("gioHang").insert({ idsanpham: id, tensanpham: tensanpham, giaban: giaban, imageurl: imageurl, soluong: soluong, thanhtien: giaban }).then((result) => {
         res.json({ id: result[0], success: true, message: 'thêm thành công' })
       })
     }
     else {
       knex("gioHang").select({ soluong }).where({ idsanpham: id }).then((result) => { })
       const so = result[0].soluong + 1
-      console.log('sooooooooooooooooo', so)
       knex("gioHang").update({ soluong: so, }).where({ idsanpham: id }).then((reasult) => {
         res.json({ success: true, message: 'Cập nhật thành công' })
+        knex("gioHang").select().where({ idsanpham: id }).then((result) => {
+          const a = result[0].giaban
+          const b = result[0].soluong
+          const c = a * b
+          knex("gioHang").update({ thanhtien: c }).then((reasult) => { })
+        })
       })
       knex("chiTietHoaDon").update({ soluong: so, }).where({ idsanpham: id, idhoadon: '1' }).then((reasult) => {
         knex("chiTietHoaDon").select().where({ idsanpham: id, idhoadon: '1' }).then((resultc) => {
           const dongiac = resultc[0].dongia
           const soluongc = resultc[0].soluong
           const tien = dongiac * soluongc
-          console.log('cccccccccccccccccccccccccccccccc', tien)
           knex("chiTietHoaDon").update({ thanhtien: tien }).then((result) => { })
         })
       })
@@ -60,17 +63,21 @@ router.post("/tangsoluong", (req, res) => {
   console.log(req.body);
   const { id } = req.body
   knex.from("gioHang").select().where({ idsanpham: id }).then((result) => {
-    console.log('ddddddddddddddddddddddddddd', result)
     const a = result[0].soluong
     const b = a + 1
-    knex.from("gioHang").update({ soluong: b }).where({ idsanpham: id }).then((result) => { })
-
+    knex.from("gioHang").update({ soluong: b }).where({ idsanpham: id }).then((result) => {
+      knex("gioHang").select().where({ idsanpham: id }).then((result) => {
+        const a = result[0].giaban
+        const b = result[0].soluong
+        const c = a * b
+        knex("gioHang").update({ thanhtien: c }).then((reasult) => { })
+      })
+    })
     knex("chiTietHoaDon").update({ soluong: b, }).where({ idsanpham: id, idhoadon: '1' }).then((reasult) => {
       knex("chiTietHoaDon").select().where({ idsanpham: id, idhoadon: '1' }).then((resultc) => {
         const dongiac = resultc[0].dongia
         const soluongc = resultc[0].soluong
         const tien = dongiac * soluongc
-        console.log('cccccccccccccccccccccccccccccccc', tien)
         knex("chiTietHoaDon").update({ thanhtien: tien }).then((result) => {
           res.json({ success: true, message: 'Cập nhật thành công' })
         })
@@ -90,14 +97,20 @@ router.post("/giamsoluong", (req, res) => {
 
       const a = result[0].soluong
       const b = a - 1
-      knex.from("gioHang").update({ soluong: b }).where({ idsanpham: id }).then((result) => { })
+      knex.from("gioHang").update({ soluong: b }).where({ idsanpham: id }).then((result) => {
+        knex("gioHang").select().where({ idsanpham: id }).then((result) => {
+          const a = result[0].giaban
+          const b = result[0].soluong
+          const c = a * b
+          knex("gioHang").update({ thanhtien: c }).then((reasult) => { })
+        })
+      })
 
       knex("chiTietHoaDon").update({ soluong: b, }).where({ idsanpham: id, idhoadon: '1' }).then((reasult) => {
         knex("chiTietHoaDon").select().where({ idsanpham: id, idhoadon: '1' }).then((resultc) => {
           const dongiac = resultc[0].dongia
           const soluongc = resultc[0].soluong
           const tien = dongiac * soluongc
-          console.log('cccccccccccccccccccccccccccccccc', tien)
           knex("chiTietHoaDon").update({ thanhtien: tien }).then((result) => {
             res.json({ success: true, message: 'Cập nhật thành công' })
           })
