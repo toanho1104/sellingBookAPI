@@ -4,10 +4,21 @@ const knex = require('../../controllers/connect')
 router.post("/", (req, res) => {
   console.log(req.body);
   const { id, } = req.body
+  knex.from('hoaDon').orderBy('id', 'desc').select().where({ idtaikhoan: id }).then((result) => {
+
+    res.json({ success: true, data: result })
+
+  })
+})
+router.post("/quanlyhoadon", (req, res) => {
+  console.log(req.body);
+  const { id, } = req.body
   knex.from('hoaDon').orderBy('id', 'desc').select().then((result) => {
 
     res.json({ success: true, data: result })
 
   })
 })
+
+
 module.exports = router

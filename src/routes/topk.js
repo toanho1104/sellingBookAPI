@@ -25,7 +25,7 @@ router.post("/chitiet", (req, res) => {
 router.post("/sanphamtopk", (req, res) => {
   console.log(req.body);
   const { id } = req.body
-  knex.from("chiTietTopk").distinct('idsanpham', 'giaban', 'tensanpham', 'mota', 'image').innerJoin("sanPham", 'sanPham.id', 'chiTietTopk.idsanpham').then((result) => {
+  knex.from("chiTietTopk").distinct('idsanpham', 'giaban', 'tensanpham', 'mota', 'image', 'sanPham.id').innerJoin("sanPham", 'sanPham.id', 'chiTietTopk.idsanpham').then((result) => {
     console.log(result)
     res.json({ success: true, data: result })
   })
